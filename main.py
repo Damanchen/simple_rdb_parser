@@ -1,6 +1,7 @@
+# coding: utf8
 from parser import RdbParser, RdbCallback
 from encodehelpers import bytes_to_unicode
-import time
+import sys
 
 
 class MyCallback(RdbCallback):
@@ -41,7 +42,9 @@ class MyCallback(RdbCallback):
         return True
 
     def handle_module_data(self, key, opcode, data):
-        print(key, opcode, data)
+        print (key, opcode, data)
+        # 不能用下面这种方式，不然data会输出乱码
+        # print('key: %s, opcode: %s, data: %s' % (key, opcode, data))
 
     def end_module(self, key, buffer_size=None, buffer=None):
         print("End of module, key: %s, buffer_size: %s, buffer: %s\n" % (key, buffer_size, buffer))
@@ -53,4 +56,5 @@ class MyCallback(RdbCallback):
 if __name__ == '__main__':
     callback = MyCallback()
     parser = RdbParser(callback)
-    parser.parse('/path/to/dump.rdb')
+    parser.parse(sys.argv[1])
+

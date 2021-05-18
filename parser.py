@@ -422,7 +422,6 @@ class RdbParser(object):
                 self._idle = None
                 self._freq = None
                 data_type = read_unsigned_char(f)
-                self.log(data_type)
 
                 if data_type == REDIS_RDB_OPCODE_EXPIRETIME_MS:
                     self._expiry = read_milliseconds_time(f)
@@ -532,7 +531,6 @@ class RdbParser(object):
             elif length == REDIS_RDB_ENC_LZF:
                 clen = self.read_length(f)
                 l = self.read_length(f)
-                self.log('bloomfilter len: %s' % l)
                 # 解压缩
                 val = self.lzf_decompress(f.read(clen), l)
             else:
